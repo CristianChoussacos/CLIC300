@@ -1,261 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ortoclic</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Ocultar secciones no activas */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6b4eff">
+  <meta name="description" content="Click300: resolvé tus dudas de ortografía, guardá palabras y aprendé jugando. Para niñas y niños de primaria.">
+  <title>Click300 · Cada palabra, un descubrimiento</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./assets/app.js" defer></script>
 </head>
-<body class="bg-slate-50 min-h-screen flex flex-col font-sans text-slate-800">
-
-    <!-- Header -->
-    <header class="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-10">
-        <div class="flex items-center gap-2">
-            <div class="bg-teal-500 text-white p-2 rounded-lg">
-                <i class="fa-solid fa-pen-nib"></i>
-            </div>
-            <h1 class="text-xl font-bold text-slate-800">Orto<span class="text-teal-500">clic</span></h1>
-        </div>
-        <div class="flex items-center gap-2 bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-sm font-medium">
-            <div class="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></div>
-            Online
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-1 p-4 mb-20 overflow-y-auto">
-        
-        <!-- Tab: Buscar -->
-        <section id="tab-buscar" class="tab-content active space-y-6">
-            <!-- Barra de búsqueda -->
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                <input type="text" id="searchInput" placeholder="Escribí una palabra..." 
-                    class="w-full pl-12 pr-12 py-4 rounded-2xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none text-lg shadow-sm transition-all">
-                <button id="btnVoz" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-teal-500 text-xl">
-                    <i class="fa-solid fa-microphone"></i>
-                </button>
-            </div>
-
-            <!-- Contenedor de Resultados -->
-            <div id="resultadosContainer" class="space-y-4">
-                <!-- Pantalla Inicial -->
-                <div class="text-center py-10 text-slate-500" id="estadoInicial">
-                    <div class="bg-slate-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                        <i class="fa-solid fa-robot"></i>
-                    </div>
-                    <h2 class="text-xl font-bold text-slate-700 mb-2">¿Qué duda tenés?</h2>
-                    <p>Escribí o dictá una palabra para ver cómo se escribe correctamente.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tab: Cuaderno (Placeholder) -->
-        <section id="tab-cuaderno" class="tab-content">
-            <h2 class="text-2xl font-bold mb-4">Mi Cuaderno ⭐</h2>
-            <p class="text-slate-500">Acá aparecerán las palabras que guardes para repasar.</p>
-        </section>
-
-        <!-- Tab: Práctica (Placeholder) -->
-        <section id="tab-practica" class="tab-content">
-            <h2 class="text-2xl font-bold mb-4">Práctica Rápida ⚡</h2>
-            <p class="text-slate-500">Próximamente: Minijuegos con tus palabras guardadas.</p>
-        </section>
-
-    </main>
-
-    <!-- Bottom Navigation -->
-    <nav class="bg-white border-t border-slate-200 fixed bottom-0 w-full flex justify-around p-3 pb-safe z-10">
-        <button onclick="switchTab('buscar')" class="nav-btn flex flex-col items-center text-teal-500 w-1/3" data-target="tab-buscar">
-            <i class="fa-solid fa-magnifying-glass text-xl mb-1"></i>
-            <span class="text-xs font-medium">Buscar</span>
-        </button>
-        <button onclick="switchTab('cuaderno')" class="nav-btn flex flex-col items-center text-slate-400 w-1/3" data-target="tab-cuaderno">
-            <i class="fa-solid fa-book text-xl mb-1"></i>
-            <span class="text-xs font-medium">Cuaderno</span>
-        </button>
-        <button onclick="switchTab('practica')" class="nav-btn flex flex-col items-center text-slate-400 w-1/3" data-target="tab-practica">
-            <i class="fa-solid fa-bolt text-xl mb-1"></i>
-            <span class="text-xs font-medium">Práctica</span>
-        </button>
+<body>
+  <a class="skip-link" href="#main">Ir al contenido</a>
+  <header class="header">
+    <a class="brand" href="./" aria-label="Click300, inicio"><span class="brand-icon" aria-hidden="true">C<span>✓</span></span><span>Click<span class="brand-number">300</span></span></a>
+    <div class="header-right"><span class="tag">Para mentes curiosas</span><span id="connection" class="connection" role="status">Comprobando conexión…</span></div>
+  </header>
+  <div class="layout">
+    <nav class="navigation" aria-label="Secciones principales">
+      <div class="nav-caption">TU RINCÓN DE PALABRAS</div>
+      <button class="nav-button active" data-tab="search" aria-current="page"><span aria-hidden="true">⌕</span> Consultar</button>
+      <button class="nav-button" data-tab="notebook"><span aria-hidden="true">☆</span> Mi cuaderno <span id="notebook-count" class="count">0</span></button>
+      <button class="nav-button" data-tab="practice"><span aria-hidden="true">✦</span> Practicar</button>
+      <div class="sidebar-note"><div class="note-spark" aria-hidden="true">✳</div><strong>Preguntar es aprender.</strong><p>Una duda puede ser el comienzo de un gran descubrimiento.</p></div>
     </nav>
-
-    <!-- Lógica JavaScript -->
-    <script>
-        // 1. DICCIONARIO SEMILLA
-        const palabrasSemilla = [
-            { id: "hacia", correcta: "Hacia", fonetica: "asia", tipo: "desambiguacion", regla: "Con H y C: Indica dirección.", ejemplo: "Voy hacia la escuela.", truco: "Hacia allá vamos." },
-            { id: "asia", correcta: "Asia", fonetica: "asia", tipo: "desambiguacion", regla: "Sin H y con S: Es el continente.", ejemplo: "Japón está en Asia.", truco: "Asia es gigante como la S." },
-            { id: "estaba", correcta: "Estaba", fonetica: "estaba", tipo: "directa", regla: "Los verbos terminados en 'aba' siempre van con B.", ejemplo: "Él estaba jugando.", truco: "El pasado que termina en ABA siempre lleva la B de Bueno." },
-            { id: "tubo", correcta: "Tubo", fonetica: "tubo", tipo: "desambiguacion", regla: "Con B: Es un objeto cilíndrico.", ejemplo: "El tubo de ensayo se rompió.", truco: "La B tiene forma de dos tubos gorditos." },
-            { id: "tuvo", correcta: "Tuvo", fonetica: "tubo", tipo: "desambiguacion", regla: "Con V: Del verbo tener.", ejemplo: "Él tuvo mucha suerte.", truco: "Tuvo viene de tener, igual que anduvo viene de andar." }
-        ];
-
-        // 2. CONFIGURACIÓN INDEXEDDB (VERSIÓN 2)
-        let db;
-        const request = indexedDB.open("OrtoclicDB", 2); // Cambiamos a V2 para forzar actualización
-
-        request.onupgradeneeded = function(event) {
-            db = event.target.result;
-            // Si existe la versión vieja, la borramos para limpiar
-            if (db.objectStoreNames.contains("palabras")) {
-                db.deleteObjectStore("palabras");
-            }
-            // Creamos la nueva tabla
-            const objectStore = db.createObjectStore("palabras", { keyPath: "id" });
-            
-            // Insertamos las palabras semilla
-            palabrasSemilla.forEach(palabra => {
-                objectStore.add(palabra);
-            });
-            console.log("Base de datos actualizada e indexada.");
-        };
-
-        request.onsuccess = function(event) {
-            db = event.target.result;
-            console.log("IndexedDB listo.");
-        };
-
-        request.onerror = function(event) {
-            console.error("Error abriendo IndexedDB", event);
-        };
-
-        // 3. ALGORITMOS DE BÚSQUEDA
-        function simplificarFonetica(texto) {
-            return texto.toLowerCase()
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quitar tildes
-                .replace(/h/g, "") // Ignorar H
-                .replace(/v/g, "b") // V suena como B
-                .replace(/z/g, "s").replace(/c([ei])/g, "s$1") // Seseo (Z y C suave suenan como S)
-                .replace(/ll/g, "y"); // Yeísmo
-        }
-
-        // Distancia de Levenshtein (Fuzzy Search)
-        function levenshtein(a, b) {
-            const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
-            for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
-            for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
-            for (let i = 1; i <= a.length; i++) {
-                for (let j = 1; j <= b.length; j++) {
-                    const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-                    matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
-                }
-            }
-            return matrix[a.length][b.length];
-        }
-
-        // 4. LÓGICA DE INTERFAZ
-        const searchInput = document.getElementById('searchInput');
-        const resultadosContainer = document.getElementById('resultadosContainer');
-
-        searchInput.addEventListener('input', (e) => {
-            const busqueda = e.target.value.trim();
-            if (busqueda.length < 3) {
-                document.getElementById('estadoInicial').style.display = 'block';
-                resultadosContainer.innerHTML = '';
-                resultadosContainer.appendChild(document.getElementById('estadoInicial'));
-                return;
-            }
-            buscarPalabra(busqueda);
-        });
-
-        function buscarPalabra(termino) {
-            const foneticaBusqueda = simplificarFonetica(termino);
-            const transaction = db.transaction(["palabras"], "readonly");
-            const objectStore = transaction.objectStore("palabras");
-            const request = objectStore.getAll();
-
-            request.onsuccess = function(event) {
-                const todasLasPalabras = event.target.result;
-                let resultados = todasLasPalabras.filter(p => p.fonetica === foneticaBusqueda);
-
-                // Si no hay match fonético exacto, buscar por error de tipeo (distancia <= 2)
-                if (resultados.length === 0) {
-                    resultados = todasLasPalabras.filter(p => levenshtein(foneticaBusqueda, simplificarFonetica(p.id)) <= 2);
-                }
-
-                renderizarResultados(resultados, termino);
-            };
-        }
-
-        function renderizarResultados(resultados, busquedaOriginal) {
-            if (resultados.length === 0) {
-                resultadosContainer.innerHTML = `
-                    <div class="text-center py-10">
-                        <div class="bg-slate-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl text-slate-400">
-                            <i class="fa-solid fa-robot"></i>
-                        </div>
-                        <h2 class="text-xl font-bold text-slate-700">¡Ups! No tengo esa palabra</h2>
-                        <p class="text-slate-500 mt-2">Por ahora mi base de datos funciona sin internet y tiene las dudas más comunes.</p>
-                    </div>`;
-                return;
-            }
-
-            // Aviso amigable de corrección
-            let html = `
-                <div class="bg-green-100 text-green-800 p-3 rounded-lg text-sm mb-4 font-medium flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    Buscaste "${busquedaOriginal}". Mirá la forma correcta:
-                </div>
-            `;
-
-            if (resultados.length > 1) {
-                // Caso Desambiguación
-                html += `<h3 class="font-bold text-lg mb-3">¿Cuál de estas opciones querías?</h3>`;
-                resultados.forEach(res => {
-                    html += `
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-3 active:scale-95 transition-transform">
-                            <h4 class="text-2xl font-bold text-teal-600 mb-1">${res.correcta}</h4>
-                            <p class="font-medium text-slate-700">${res.regla}</p>
-                            <p class="text-slate-500 text-sm mt-2 italic">Ej: "${res.ejemplo}"</p>
-                        </div>
-                    `;
-                });
-            } else {
-                // Caso Directo
-                const res = resultados[0];
-                html += `
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
-                        <h2 class="text-4xl font-black text-slate-800 mb-2">${res.correcta}</h2>
-                        <p class="text-lg font-medium text-slate-700 mb-4">${res.regla}</p>
-                        
-                        <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-4">
-                            <div class="flex items-center gap-2 text-amber-700 font-bold mb-1">
-                                <i class="fa-solid fa-lightbulb"></i> Truco
-                            </div>
-                            <p class="text-amber-900">${res.truco}</p>
-                        </div>
-
-                        <p class="text-slate-500 italic mb-6">"${res.ejemplo}"</p>
-
-                        <button class="w-full bg-teal-500 text-white font-bold py-3 rounded-xl hover:bg-teal-600 flex justify-center items-center gap-2">
-                            <i class="fa-solid fa-star"></i> Guardar en mi cuaderno
-                        </button>
-                    </div>
-                `;
-            }
-            resultadosContainer.innerHTML = html;
-        }
-
-        // 5. NAVEGACIÓN DE PESTAÑAS
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-            
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-teal-500');
-                btn.classList.add('text-slate-400');
-            });
-            const activeBtn = document.querySelector(`[data-target="tab-${tabId}"]`);
-            activeBtn.classList.remove('text-slate-400');
-            activeBtn.classList.add('text-teal-500');
-        }
-    </script>
+    <main id="main" tabindex="-1">
+      <section id="panel-search" class="panel" aria-labelledby="search-title">
+        <div class="intro"><span class="eyebrow">UNA DUDA, UN DESCUBRIMIENTO</span><h1 id="search-title">¿Cómo se <span>escribe?</span></h1><p>Escribí la palabra como te salga.<br>Vamos a descubrirla juntos.</p>
+          <svg class="book-art" viewBox="0 0 190 160" aria-hidden="true"><circle cx="101" cy="80" r="64" fill="#ede8ff"/><path d="M35 55Q66 35 99 54V125Q69 103 35 119Z" fill="#fff" stroke="#6b4eff" stroke-width="3"/><path d="M99 54Q133 35 165 55V119Q130 103 99 125Z" fill="#c8f0df" stroke="#6b4eff" stroke-width="3"/><path d="M51 65l30-3m-30 18 30-3m-30 18 20-2m44-29 33 3m-33 13 26 3" stroke="#b0a1e7" stroke-width="4" stroke-linecap="round"/><path d="M99 55v70" stroke="#6b4eff" stroke-width="3"/><path d="m153 23 2-10 3 10 10 3-10 2-3 10-2-10-10-2Z" fill="#ffbe68"/><circle cx="27" cy="98" r="5" fill="#ff998a"/><path d="m45 22 3 6 6 3-6 3-3 6-3-6-6-3 6-3Z" fill="#6b4eff"/></svg>
+        </div>
+        <form id="search-form" class="search-card" autocomplete="off">
+          <label for="search-input">¿Qué palabra te genera una duda?</label>
+          <div class="input-row"><span class="input-icon" aria-hidden="true">⌕</span><input id="search-input" name="word" type="text" maxlength="80" placeholder="Por ejemplo: estava" spellcheck="false" autocorrect="off" autocapitalize="none" aria-describedby="input-hint dictionary-status"><button type="button" id="clear-search" class="icon-button" aria-label="Borrar búsqueda" hidden>×</button><button type="button" id="voice" class="icon-button voice" aria-label="Dictar una palabra" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></button><button type="submit" class="primary">Descubrir <span aria-hidden="true">→</span></button></div>
+          <div class="search-foot"><span id="input-hint">También podés usar el micrófono.</span><span id="dictionary-status" role="status">Preparando el diccionario…</span></div>
+        </form>
+        <p id="voice-status" class="message" role="status" hidden></p>
+        <div id="search-results" aria-live="polite" aria-atomic="false"></div>
+        <div id="welcome"><div class="suggestions"><span>¿Probamos con una?</span><div id="quick-words" class="chips"></div></div><div class="feature-grid"><article><span class="feature-icon mint" aria-hidden="true">Aa</span><h2>Encontrá tu palabra</h2><p>No pasa nada si no sabés cómo se escribe. Empezá por intentarlo.</p></article><article><span class="feature-icon peach" aria-hidden="true">☆</span><h2>Guardá lo que aprendés</h2><p>Tu cuaderno reúne las palabras que querés recordar.</p></article><article><span class="feature-icon lilac" aria-hidden="true">✦</span><h2>Un poquito de práctica</h2><p>Pequeños desafíos para aprender a tu ritmo.</p></article></div></div>
+      </section>
+      <section id="panel-notebook" class="panel" aria-labelledby="notebook-title" hidden><span class="eyebrow">TUS DESCUBRIMIENTOS</span><h1 id="notebook-title">Mi <span>cuaderno</span></h1><p class="section-description">Palabras que guardaste para volver a mirar.</p><div class="section-actions"><label for="notebook-filter" class="sr-only">Filtrar mi cuaderno</label><input id="notebook-filter" type="search" placeholder="Buscar en mi cuaderno…"><button id="practice-saved" class="primary">Repasar mis palabras →</button></div><div id="notebook-list"></div></section>
+      <section id="panel-practice" class="panel" aria-labelledby="practice-title" hidden><span class="eyebrow">APRENDÉ A TU RITMO</span><h1 id="practice-title">Un pequeño <span>desafío</span></h1><p class="section-description">Leé la frase y elegí la palabra que corresponde. ¡Podés volver a intentarlo!</p><div class="practice-toolbar"><label for="practice-source">Quiero practicar</label><select id="practice-source"><option value="all">Palabras de primaria</option><option value="saved">Mi cuaderno</option></select><span id="practice-progress">0 aciertos de 0 intentos</span></div><div id="practice-question"></div></section>
+      <aside id="about" class="about" aria-labelledby="about-title" hidden><h2 id="about-title">Un espacio para aprender</h2><p>Click300 ayuda a consultar la escritura de palabras. Una palabra bien escrita puede tener varios significados: la oración ayuda a elegir.</p><p>El diccionario ortográfico español RLA-ES contiene <strong id="word-count">57.344 entradas base</strong> y reglas para reconocer otras formas. Debajo de cada resultado se busca su significado en Wikcionario en español. Se incluyen 131.931 entradas con definiciones y relaciones con 353.779 plurales, conjugaciones y otras formas. Si una definición no está disponible, se indica en la tarjeta. Las fichas de primaria agregan explicaciones y ejemplos originales en palabras sencillas. La app no analiza oraciones.</p><p>No hace falta crear una cuenta. El cuaderno queda en este navegador y dispositivo. Las consultas escritas y las definiciones se procesan aquí. El dictado es opcional: según el navegador, puede enviar audio a su proveedor y necesitar conexión.</p><p id="offline-info">La primera visita necesita conexión para descargar la app, el diccionario y las definiciones (aproximadamente 32 MB de datos).</p><p><a href="https://github.com/sbosio/rla-es" target="_blank" rel="noopener noreferrer">Diccionario ortográfico ↗</a> · <a href="https://es.wiktionary.org/" target="_blank" rel="noopener noreferrer">Significados: Wikcionario ↗</a> · <a href="./THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer">Créditos y licencias ↗</a></p></aside>
+      <p id="storage-warning" class="message warning" role="status" hidden></p>
+      <footer><span>Hecho para preguntar, descubrir y aprender.</span><button id="about-toggle" class="about-link" aria-expanded="false" aria-controls="about">Para familias y docentes ↗</button></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript><p class="message">Activá JavaScript en tu navegador para usar el diccionario y guardar palabras.</p></noscript>
 </body>
 </html>
