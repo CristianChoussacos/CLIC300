@@ -1,0 +1,13 @@
+{
+  "id": "./",
+  "name": "Click300 · Dudas de ortografía",
+  "short_name": "Click300",
+  "description": "Consultá cómo se escribe, guardá palabras y practicá a tu ritmo.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf9f5",
+  "theme_color": "#6b4eff",
+  "icons": [{"src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}, {"src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"}, {"src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}]
+}
