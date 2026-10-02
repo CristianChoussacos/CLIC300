@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ortoclic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Ocultar secciones no activas */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col font-sans text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-10">
+        <div class="flex items-center gap-2">
+            <div class="bg-teal-500 text-white p-2 rounded-lg">
+                <i class="fa-solid fa-pen-nib"></i>
+            </div>
+            <h1 class="text-xl font-bold text-slate-800">Orto<span class="text-teal-500">clic</span></h1>
+        </div>
+        <div class="flex items-center gap-2 bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-sm font-medium">
+            <div class="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></div>
+            Online
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 mb-20 overflow-y-auto">
+        
+        <!-- Tab: Buscar -->
+        <section id="tab-buscar" class="tab-content active space-y-6">
+            <!-- Barra de búsqueda -->
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="Escribí una palabra..." 
+                    class="w-full pl-12 pr-12 py-4 rounded-2xl border-2 border-slate-200 focus:border-teal-500 focus:outline-none text-lg shadow-sm transition-all">
+                <button id="btnVoz" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-teal-500 text-xl">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+            </div>
+
+            <!-- Contenedor de Resultados -->
+            <div id="resultadosContainer" class="space-y-4">
+                <!-- Pantalla Inicial -->
+                <div class="text-center py-10 text-slate-500" id="estadoInicial">
+                    <div class="bg-slate-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-700 mb-2">¿Qué duda tenés?</h2>
+                    <p>Escribí o dictá una palabra para ver cómo se escribe correctamente.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab: Cuaderno (Placeholder) -->
+        <section id="tab-cuaderno" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">Mi Cuaderno ⭐</h2>
+            <p class="text-slate-500">Acá aparecerán las palabras que guardes para repasar.</p>
+        </section>
+
+        <!-- Tab: Práctica (Placeholder) -->
+        <section id="tab-practica" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">Práctica Rápida ⚡</h2>
+            <p class="text-slate-500">Próximamente: Minijuegos con tus palabras guardadas.</p>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bg-white border-t border-slate-200 fixed bottom-0 w-full flex justify-around p-3 pb-safe z-10">
+        <button onclick="switchTab('buscar')" class="nav-btn flex flex-col items-center text-teal-500 w-1/3" data-target="tab-buscar">
+            <i class="fa-solid fa-magnifying-glass text-xl mb-1"></i>
+            <span class="text-xs font-medium">Buscar</span>
+        </button>
+        <button onclick="switchTab('cuaderno')" class="nav-btn flex flex-col items-center text-slate-400 w-1/3" data-target="tab-cuaderno">
+            <i class="fa-solid fa-book text-xl mb-1"></i>
+            <span class="text-xs font-medium">Cuaderno</span>
+        </button>
+        <button onclick="switchTab('practica')" class="nav-btn flex flex-col items-center text-slate-400 w-1/3" data-target="tab-practica">
+            <i class="fa-solid fa-bolt text-xl mb-1"></i>
+            <span class="text-xs font-medium">Práctica</span>
+        </button>
+    </nav>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        // 1. DICCIONARIO SEMILLA
+        const palabrasSemilla = [
+            { id: "hacia", correcta: "Hacia", fonetica: "asia", tipo: "desambiguacion", regla: "Con H y C: Indica dirección.", ejemplo: "Voy hacia la escuela.", truco: "Hacia allá vamos." },
+            { id: "asia", correcta: "Asia", fonetica: "asia", tipo: "desambiguacion", regla: "Sin H y con S: Es el continente.", ejemplo: "Japón está en Asia.", truco: "Asia es gigante como la S." },
+            { id: "estaba", correcta: "Estaba", fonetica: "estaba", tipo: "directa", regla: "Los verbos terminados en 'aba' siempre van con B.", ejemplo: "Él estaba jugando.", truco: "El pasado que termina en ABA siempre lleva la B de Bueno." },
+            { id: "tubo", correcta: "Tubo", fonetica: "tubo", tipo: "desambiguacion", regla: "Con B: Es un objeto cilíndrico.", ejemplo: "El tubo de ensayo se rompió.", truco: "La B tiene forma de dos tubos gorditos." },
+            { id: "tuvo", correcta: "Tuvo", fonetica: "tubo", tipo: "desambiguacion", regla: "Con V: Del verbo tener.", ejemplo: "Él tuvo mucha suerte.", truco: "Tuvo viene de tener, igual que anduvo viene de andar." }
+        ];
+
+        // 2. CONFIGURACIÓN INDEXEDDB (VERSIÓN 2)
+        let db;
+        const request = indexedDB.open("OrtoclicDB", 2); // Cambiamos a V2 para forzar actualización
+
+        request.onupgradeneeded = function(event) {
+            db = event.target.result;
+            // Si existe la versión vieja, la borramos para limpiar
+            if (db.objectStoreNames.contains("palabras")) {
+                db.deleteObjectStore("palabras");
+            }
+            // Creamos la nueva tabla
+            const objectStore = db.createObjectStore("palabras", { keyPath: "id" });
+            
+            // Insertamos las palabras semilla
+            palabrasSemilla.forEach(palabra => {
+                objectStore.add(palabra);
+            });
+            console.log("Base de datos actualizada e indexada.");
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            console.log("IndexedDB listo.");
+        };
+
+        request.onerror = function(event) {
+            console.error("Error abriendo IndexedDB", event);
+        };
+
+        // 3. ALGORITMOS DE BÚSQUEDA
+        function simplificarFonetica(texto) {
+            return texto.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quitar tildes
+                .replace(/h/g, "") // Ignorar H
+                .replace(/v/g, "b") // V suena como B
+                .replace(/z/g, "s").replace(/c([ei])/g, "s$1") // Seseo (Z y C suave suenan como S)
+                .replace(/ll/g, "y"); // Yeísmo
+        }
+
+        // Distancia de Levenshtein (Fuzzy Search)
+        function levenshtein(a, b) {
+            const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+            for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+            for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+            for (let i = 1; i <= a.length; i++) {
+                for (let j = 1; j <= b.length; j++) {
+                    const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+                    matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+                }
+            }
+            return matrix[a.length][b.length];
+        }
+
+        // 4. LÓGICA DE INTERFAZ
+        const searchInput = document.getElementById('searchInput');
+        const resultadosContainer = document.getElementById('resultadosContainer');
+
+        searchInput.addEventListener('input', (e) => {
+            const busqueda = e.target.value.trim();
+            if (busqueda.length < 3) {
+                document.getElementById('estadoInicial').style.display = 'block';
+                resultadosContainer.innerHTML = '';
+                resultadosContainer.appendChild(document.getElementById('estadoInicial'));
+                return;
+            }
+            buscarPalabra(busqueda);
+        });
+
+        function buscarPalabra(termino) {
+            const foneticaBusqueda = simplificarFonetica(termino);
+            const transaction = db.transaction(["palabras"], "readonly");
+            const objectStore = transaction.objectStore("palabras");
+            const request = objectStore.getAll();
+
+            request.onsuccess = function(event) {
+                const todasLasPalabras = event.target.result;
+                let resultados = todasLasPalabras.filter(p => p.fonetica === foneticaBusqueda);
+
+                // Si no hay match fonético exacto, buscar por error de tipeo (distancia <= 2)
+                if (resultados.length === 0) {
+                    resultados = todasLasPalabras.filter(p => levenshtein(foneticaBusqueda, simplificarFonetica(p.id)) <= 2);
+                }
+
+                renderizarResultados(resultados, termino);
+            };
+        }
+
+        function renderizarResultados(resultados, busquedaOriginal) {
+            if (resultados.length === 0) {
+                resultadosContainer.innerHTML = `
+                    <div class="text-center py-10">
+                        <div class="bg-slate-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl text-slate-400">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-700">¡Ups! No tengo esa palabra</h2>
+                        <p class="text-slate-500 mt-2">Por ahora mi base de datos funciona sin internet y tiene las dudas más comunes.</p>
+                    </div>`;
+                return;
+            }
+
+            // Aviso amigable de corrección
+            let html = `
+                <div class="bg-green-100 text-green-800 p-3 rounded-lg text-sm mb-4 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Buscaste "${busquedaOriginal}". Mirá la forma correcta:
+                </div>
+            `;
+
+            if (resultados.length > 1) {
+                // Caso Desambiguación
+                html += `<h3 class="font-bold text-lg mb-3">¿Cuál de estas opciones querías?</h3>`;
+                resultados.forEach(res => {
+                    html += `
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-3 active:scale-95 transition-transform">
+                            <h4 class="text-2xl font-bold text-teal-600 mb-1">${res.correcta}</h4>
+                            <p class="font-medium text-slate-700">${res.regla}</p>
+                            <p class="text-slate-500 text-sm mt-2 italic">Ej: "${res.ejemplo}"</p>
+                        </div>
+                    `;
+                });
+            } else {
+                // Caso Directo
+                const res = resultados[0];
+                html += `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                        <h2 class="text-4xl font-black text-slate-800 mb-2">${res.correcta}</h2>
+                        <p class="text-lg font-medium text-slate-700 mb-4">${res.regla}</p>
+                        
+                        <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-4">
+                            <div class="flex items-center gap-2 text-amber-700 font-bold mb-1">
+                                <i class="fa-solid fa-lightbulb"></i> Truco
+                            </div>
+                            <p class="text-amber-900">${res.truco}</p>
+                        </div>
+
+                        <p class="text-slate-500 italic mb-6">"${res.ejemplo}"</p>
+
+                        <button class="w-full bg-teal-500 text-white font-bold py-3 rounded-xl hover:bg-teal-600 flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-star"></i> Guardar en mi cuaderno
+                        </button>
+                    </div>
+                `;
+            }
+            resultadosContainer.innerHTML = html;
+        }
+
+        // 5. NAVEGACIÓN DE PESTAÑAS
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-teal-500');
+                btn.classList.add('text-slate-400');
+            });
+            const activeBtn = document.querySelector(`[data-target="tab-${tabId}"]`);
+            activeBtn.classList.remove('text-slate-400');
+            activeBtn.classList.add('text-teal-500');
+        }
+    </script>
+</body>
+</html>
