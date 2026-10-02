@@ -1,0 +1,336 @@
+{
+  "source": "Wikcionario en español, autores y colaboradores; extracción Kaikki / Wiktextract, Tatu Ylonen",
+  "sourceUrl": "https://kaikki.org/eswiktionary/",
+  "downloadUrl": "https://kaikki.org/dictionary/downloads/es/es-extract.jsonl.gz",
+  "sourceLastModified": "2026-09-28T15:20:33Z",
+  "sourceSha256": "f787368d1bfce1ce83c40f1551358751bca89c1de6afd6d5ba2a793c0f5df3ff",
+  "license": "CC-BY-SA-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "directEntries": 131931,
+  "linkedForms": 353779,
+  "senses": 192646,
+  "totalBytes": 31350069,
+  "modifications": "Selección de entradas españolas de hasta dos palabras, espacios normalizados, hasta ocho acepciones y relaciones de formas a lemas. Se priorizan las relaciones de la entrada propia sobre tablas de conjugación. No se incluyen traducciones, citas ni ejemplos de obras externas.",
+  "files": [
+    {
+      "name": "definitions-00.json",
+      "bytes": 484687,
+      "sha256": "4fcd5521f7995026cbf8a203692b71298a9a43a415d210436dda48423a728115"
+    },
+    {
+      "name": "definitions-01.json",
+      "bytes": 485922,
+      "sha256": "cc8fcd08a90f8fb0c303011ae0549164845363b9ece60e0a3768c50d8b81da96"
+    },
+    {
+      "name": "definitions-02.json",
+      "bytes": 485942,
+      "sha256": "947e598e39ebaae354d4bca8472bab61a166771c6300a81aebb0201314e63d5d"
+    },
+    {
+      "name": "definitions-03.json",
+      "bytes": 489723,
+      "sha256": "20bc28dd615374ee38dcdf3fb7063f1bb3cd2a1474f95713b6c382ec0efb5e2f"
+    },
+    {
+      "name": "definitions-04.json",
+      "bytes": 475727,
+      "sha256": "1a8675e5a4ae07c797ce3b8042d35583f8b3016e64f0beb2e9e4554f656f92f5"
+    },
+    {
+      "name": "definitions-05.json",
+      "bytes": 473164,
+      "sha256": "1c1579718cd9b691b92cb0cf240c5aeb06619eefd5a01a7edd15e8346f2f9100"
+    },
+    {
+      "name": "definitions-06.json",
+      "bytes": 499274,
+      "sha256": "d160e3f74a74c6e36f8471b4567154e0b6f7c6bee1ffaa1049afdc9d47779ec6"
+    },
+    {
+      "name": "definitions-07.json",
+      "bytes": 481489,
+      "sha256": "37f56d2976fce4730d21c78d53624b715d625a02a7be549e566b156fbee47356"
+    },
+    {
+      "name": "definitions-08.json",
+      "bytes": 494180,
+      "sha256": "25a2c687bc408d3526e03f434e1eb59d5135d715b1a04815b458710abd05de29"
+    },
+    {
+      "name": "definitions-09.json",
+      "bytes": 503209,
+      "sha256": "d5a33b80957fb1bd3cde29bf39b8735a2f90ed52c39f6ed9d5d2843e0753b0d6"
+    },
+    {
+      "name": "definitions-0a.json",
+      "bytes": 486995,
+      "sha256": "6b5db2c7ef1bf7d0a386e64ba1b4be99e3d94a78f1472be06d97e87ab35c850b"
+    },
+    {
+      "name": "definitions-0b.json",
+      "bytes": 479245,
+      "sha256": "df42f007514c1bfd60dbf035e9d20d1379db612bc03863e9eb3d1a38b8c3753f"
+    },
+    {
+      "name": "definitions-0c.json",
+      "bytes": 488905,
+      "sha256": "09d70dfb68dbc6caf9c6075577097a576004d046065c2d416517e37360b490f1"
+    },
+    {
+      "name": "definitions-0d.json",
+      "bytes": 487142,
+      "sha256": "6ac9b95c927838ff50ab51d69e51b6a3a28d69bb0bd1f65c4ba1cc0900c1c8a3"
+    },
+    {
+      "name": "definitions-0e.json",
+      "bytes": 491059,
+      "sha256": "6d5c7b7f2a88011e3df5d79bc0488070c7569282a11edb093ed629723de6f24e"
+    },
+    {
+      "name": "definitions-0f.json",
+      "bytes": 500460,
+      "sha256": "6d8aa98c0937a36ffcd9e1c224e04e8f5532ba14f57d99bae7a01aad0b18bcc2"
+    },
+    {
+      "name": "definitions-10.json",
+      "bytes": 518538,
+      "sha256": "8957e1f9ce5e2ad88c31d25bac5e8bc201e7fba04b26567e81fd872ae0dfeb36"
+    },
+    {
+      "name": "definitions-11.json",
+      "bytes": 486242,
+      "sha256": "576f899576035efa3c168055fbc3576cc845d1b85ec38bc0cedea81b54e20799"
+    },
+    {
+      "name": "definitions-12.json",
+      "bytes": 498708,
+      "sha256": "29b431ca2fb900101a7019a1ca984f2d1f1d84ee7d71368861e98e62bafd7219"
+    },
+    {
+      "name": "definitions-13.json",
+      "bytes": 473348,
+      "sha256": "edf8c5d9ad289fcedbac49486ef30a4fd7e1ce2f1105c82622f320d7c623afff"
+    },
+    {
+      "name": "definitions-14.json",
+      "bytes": 498544,
+      "sha256": "117e307fcfbcdfb78173718cc52d196dbf65a24248576d9c5f1f05fa3cf92d2a"
+    },
+    {
+      "name": "definitions-15.json",
+      "bytes": 481686,
+      "sha256": "eee4aaee0565fb97b2020a5f2ded96ef8e70c0a49534b6f77d6718b5578ae1a1"
+    },
+    {
+      "name": "definitions-16.json",
+      "bytes": 509676,
+      "sha256": "c868b6593d4363644482f8930835974cce4e0bb5af2d7150fb51b4b119f76a18"
+    },
+    {
+      "name": "definitions-17.json",
+      "bytes": 488161,
+      "sha256": "4d61ae90ac3ceed0c4dbf55fb1eb75a4af4f752b98870807930b25a9d9083574"
+    },
+    {
+      "name": "definitions-18.json",
+      "bytes": 491924,
+      "sha256": "544b77b45057a05be479746399875cb4933f65bef5ab74b5796616e9d3805785"
+    },
+    {
+      "name": "definitions-19.json",
+      "bytes": 503541,
+      "sha256": "e543b2eb95edd914abf375043658f1f994f205ce415bb49d0e7284c5edcc1e81"
+    },
+    {
+      "name": "definitions-1a.json",
+      "bytes": 493524,
+      "sha256": "fcbd165a255a3e63943b508b451193aaf1ba0820aca2af97c3fc8a910a5841e7"
+    },
+    {
+      "name": "definitions-1b.json",
+      "bytes": 496663,
+      "sha256": "715dd416177f9520fca10a90448a0a8c79ebe4c84b02cf21e9815b304a146ce7"
+    },
+    {
+      "name": "definitions-1c.json",
+      "bytes": 493656,
+      "sha256": "d87e098da31303b79818356775653d20a03797b294849f5d5b01bb786b8961f0"
+    },
+    {
+      "name": "definitions-1d.json",
+      "bytes": 483893,
+      "sha256": "69f3b50498833f74f709acee215a975d4ae8fc9c748ebbbce939abf6d51570e8"
+    },
+    {
+      "name": "definitions-1e.json",
+      "bytes": 491838,
+      "sha256": "a6e494dbe8704e96bce55badeee96b19e2002d8b517493ace487d0c22ca1c1bd"
+    },
+    {
+      "name": "definitions-1f.json",
+      "bytes": 480849,
+      "sha256": "4697489d4f30ec625d1eb662a95e48438d917e8f2d287b7671120b705005dd74"
+    },
+    {
+      "name": "definitions-20.json",
+      "bytes": 490403,
+      "sha256": "0a3a10a77aa3c6ade9b20703516c53dd67aa2ce3e11b9bb902edec276e7104fc"
+    },
+    {
+      "name": "definitions-21.json",
+      "bytes": 501453,
+      "sha256": "44ac282878220070c4542c3fd56f6c1869efed6bfb5ea9c9a51e542bf62b92ae"
+    },
+    {
+      "name": "definitions-22.json",
+      "bytes": 490895,
+      "sha256": "0f440efbd609a5517170924426e4b4565e254c843ec29057d86cba7bfdc8f1dc"
+    },
+    {
+      "name": "definitions-23.json",
+      "bytes": 494343,
+      "sha256": "8c7ca80b5b5cefda55743880739a98e7317a016e95075be1cae9abb60a80c3f4"
+    },
+    {
+      "name": "definitions-24.json",
+      "bytes": 482788,
+      "sha256": "274223140402f1ebb203d2eebbb6bf316a8466fcaab5d1a64727cc18ebc0f5d8"
+    },
+    {
+      "name": "definitions-25.json",
+      "bytes": 490991,
+      "sha256": "e234956ea08930168a13d8919dbb382300e868f71041514e87ca22e7da16fe12"
+    },
+    {
+      "name": "definitions-26.json",
+      "bytes": 475925,
+      "sha256": "2a7a49b2f66bb4f92f8180a1dc10d123bf70ff9fd2938ba1a25ff38137274263"
+    },
+    {
+      "name": "definitions-27.json",
+      "bytes": 485247,
+      "sha256": "5f3cb861b17f1c30d58681848198802b7dc984910ba43cb4310663e4a7202c8e"
+    },
+    {
+      "name": "definitions-28.json",
+      "bytes": 497843,
+      "sha256": "e769d3cbf6038e6dbea9149361b8aaeab342f2941b7ae841146c1576daf0aba2"
+    },
+    {
+      "name": "definitions-29.json",
+      "bytes": 499619,
+      "sha256": "eed7964ec8d7ab32c48369ca4519a3939101a153c7b6e86a5089d2c4adf59116"
+    },
+    {
+      "name": "definitions-2a.json",
+      "bytes": 510915,
+      "sha256": "5ed02ae954069c7658ba21e2fb5a9af0ee9199dd4c6fd3013ce76a2d0d9886d9"
+    },
+    {
+      "name": "definitions-2b.json",
+      "bytes": 490227,
+      "sha256": "6525f79bbe7259ee89aef3396bdf51e050c7e674cba37b60dffdc65dffc7d693"
+    },
+    {
+      "name": "definitions-2c.json",
+      "bytes": 478773,
+      "sha256": "6c63e070eaff69200f50c948baadd9cb7e75ffc5af9a5d39c1b203ad5f7d3f1e"
+    },
+    {
+      "name": "definitions-2d.json",
+      "bytes": 503990,
+      "sha256": "5c8a6b3d6f895038de47f582340e99ac8baac3917498c983a2f79d99ea8726cb"
+    },
+    {
+      "name": "definitions-2e.json",
+      "bytes": 464175,
+      "sha256": "096d46e8fc5da87e73cf1d05acae1085cf718f0a380b77cb6aa586733c8891c5"
+    },
+    {
+      "name": "definitions-2f.json",
+      "bytes": 491015,
+      "sha256": "c5ff13020d5c0654416cfcc18e024a4aee5a5a9c7b18864025c100b15b0bebd8"
+    },
+    {
+      "name": "definitions-30.json",
+      "bytes": 477709,
+      "sha256": "661627a0ada8aa9d7ebea0d63a7b020a7b8f4758880369a9063bf7eb16deecf0"
+    },
+    {
+      "name": "definitions-31.json",
+      "bytes": 489941,
+      "sha256": "7b9da7f67d2fa164cd314628dccca699e62cd71640f325ec87422897ee12ed0e"
+    },
+    {
+      "name": "definitions-32.json",
+      "bytes": 490323,
+      "sha256": "f524b180948356bfda96fc3e99a1398591f922be5e8263a33ebc44bee1e67e49"
+    },
+    {
+      "name": "definitions-33.json",
+      "bytes": 508610,
+      "sha256": "fe99c60d0e120e111ded8639a97ba7a7ecae5ba2ea1dc602927c19cceb1c4815"
+    },
+    {
+      "name": "definitions-34.json",
+      "bytes": 497557,
+      "sha256": "ead1632cb2e069bdb3888d9594b2f673e68f91c60412081a90ee5e027f8cb8fa"
+    },
+    {
+      "name": "definitions-35.json",
+      "bytes": 491768,
+      "sha256": "f44d752845d860f712a383aaa8cf68d73bc288b6d812ed77cdcd0a67fe8e1c9b"
+    },
+    {
+      "name": "definitions-36.json",
+      "bytes": 479053,
+      "sha256": "fb8db3e236ea7973dd28abeaf5b2b41d58c2559bea8131f37ccb5f5be76a1679"
+    },
+    {
+      "name": "definitions-37.json",
+      "bytes": 491356,
+      "sha256": "eefd39930e00b2d59e19392919d2407920638c2711c47f2907736ee9ff9d5ecf"
+    },
+    {
+      "name": "definitions-38.json",
+      "bytes": 497107,
+      "sha256": "87dd6b1b159df847ab17be880c898f49b0b1cbcd4d3fb62b3676ebeca34e8610"
+    },
+    {
+      "name": "definitions-39.json",
+      "bytes": 492402,
+      "sha256": "691d536709aacd7907f576b9fc78d3a42319b204f4053969711af44e52e77659"
+    },
+    {
+      "name": "definitions-3a.json",
+      "bytes": 481325,
+      "sha256": "1c5d7cb2c8351443f5f4eb97dcba4e6beab999016a544770c6c71a12d4b4c2ec"
+    },
+    {
+      "name": "definitions-3b.json",
+      "bytes": 480372,
+      "sha256": "0faff60244c6122a5136921b11dc34fac11f18ff080929d8587df8149e4779d9"
+    },
+    {
+      "name": "definitions-3c.json",
+      "bytes": 486022,
+      "sha256": "d42c827f7b61db808c039d9e767525d2c63f9ce3cf502693ed095f88e77e50b0"
+    },
+    {
+      "name": "definitions-3d.json",
+      "bytes": 491640,
+      "sha256": "bad7c3722a7ee8e88b0fcc6bed398c5b972f372af1352572f6c29abcf53f735c"
+    },
+    {
+      "name": "definitions-3e.json",
+      "bytes": 480486,
+      "sha256": "6e5e84fe81a9b18b8c1aac5bf68eeb2b08cc58aebf92d03e3b7d9d4aeddc339e"
+    },
+    {
+      "name": "definitions-3f.json",
+      "bytes": 467882,
+      "sha256": "6e8663f71bf1a15de35c9035e41ccf9f1bcae975f1f8314cc56b0e7b0ceaafb6"
+    }
+  ]
+}

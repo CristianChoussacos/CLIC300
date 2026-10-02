@@ -1,10 +1,12 @@
 import {entries, entryByWord, quickWords} from './education.js';
 import {createSearchEngine, fold, makeQuestion, normalize, validateQuery} from './search.js';
 import {NotebookStore} from './storage.js';
+import {DefinitionStore, sourceUrl} from './definitions.js';
 
 const $ = id => document.getElementById(id);
 const base = new URL('./', document.baseURI);
 const store = new NotebookStore();
+const definitions = new DefinitionStore(base);
 const fallbackSearch = createSearchEngine(null);
 let saved = [];
 let lastResult;
@@ -105,6 +107,64 @@ async function toggleSaved(word, action) {
   finally { action.disabled = false; action.textContent = previousLabel; }
 }
 
+function dictionaryDefinition(result) {
+  const section = el('section', 'dictionary-definition');
+  section.setAttribute('aria-label', `Significado de ${result.word} en el diccionario`);
+  function render(data) {
+    section.replaceChildren(el('h4', 'definition-heading', 'Significado en el diccionario'));
+    section.removeAttribute('aria-busy');
+    if (data.status !== 'found') {
+      section.append(el('p', 'definition-status', data.status === 'unavailable' ? 'No se pudo cargar el significado. Podés volver a intentarlo.' : 'No encontramos una definición para esta palabra. Podés consultar con tu docente.'));
+      if (data.status === 'unavailable') section.append(button('Volver a cargar el significado', 'secondary', load));
+      return;
+    }
+    if (data.formOf.length) section.append(el('p', 'definition-form', `Es una forma de ${data.formOf.map(word => `«${word}»`).join(' o ')}. Estos son sus significados:`));
+    const list = (senses,start = 1) => {
+      const items = el('ol', 'definition-senses');
+      items.start = start;
+      for (const sense of senses) {
+        const item = el('li');
+        item.append(el('span', 'definition-pos', sense.pos),el('span', '', sense.text));
+        items.append(item);
+      }
+      return items;
+    };
+    section.append(list(data.senses.slice(0,2)));
+    if (data.senses.length > 2) {
+      const more = el('details', 'definition-more');
+      more.append(el('summary', '', 'Otros significados'),list(data.senses.slice(2),3));
+      section.append(more);
+    }
+    const credits = el('p', 'definition-source');
+    credits.append(document.createTextNode('Fuente: '));
+    data.sources.forEach((word,index) => {
+      if (index) credits.append(document.createTextNode(' · '));
+      const link = el('a', '', `Wikcionario: ${word} ↗`);
+      link.href = sourceUrl(word);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      credits.append(link);
+    });
+    credits.append(document.createTextNode(' · '));
+    const license = el('a', '', 'CC BY-SA 4.0');
+    license.href = new URL('./licenses/CC-BY-SA-4.0.txt',base);
+    license.target = '_blank';
+    license.rel = 'noopener noreferrer';
+    credits.append(license);
+    section.append(credits);
+  }
+  async function load() {
+    section.replaceChildren(el('h4', 'definition-heading', 'Significado en el diccionario'),el('p', 'definition-status', 'Buscando el significado…'));
+    section.setAttribute('aria-busy', 'true');
+    const data = await definitions.lookup(result.word);
+    // La respuesta pertenece a esta tarjeta; una consulta nueva no la reutiliza.
+    if (data.status !== 'unavailable') result.definition = data;
+    if (section.isConnected) render(data);
+  }
+  if (result.definition) render(result.definition); else load();
+  return section;
+}
+
 function wordCard(result) {
   const card = el('article', 'word-card');
   const top = el('div', 'word-top');
@@ -117,14 +177,12 @@ function wordCard(result) {
     top.append(audio);
   }
   card.append(top);
+  card.append(dictionaryDefinition(result));
   if (result.meaning) {
-    card.append(el('p','meaning',result.meaning), el('p','example',`«${result.example}»`));
+    card.append(el('h4','simple-heading','En palabras sencillas'),el('p','meaning',result.meaning), el('p','example',`«${result.example}»`));
     const tip = el('div', 'tip');
     tip.append(el('strong', '', 'Una ayuda para recordarlo'), el('span', '', result.tip));
     card.append(tip);
-  } else {
-    card.append(el('p', 'meaning', 'Esta escritura está reconocida por el diccionario ortográfico.'));
-    card.append(el('p', 'result-description', 'Todavía no tiene una ficha con significado y ejemplo. Revisá la oración con tu docente si dudás de cuál palabra usar.'));
   }
   const actions = el('div', 'card-actions');
   const action = button(isSaved(result.word) ? '★ Guardada · quitar' : '☆ Guardar en mi cuaderno', `secondary ${isSaved(result.word) ? 'saved' : ''}`, () => toggleSaved(result.word, action));
@@ -374,7 +432,7 @@ if ('serviceWorker' in navigator && window.isSecureContext) {
   navigator.serviceWorker.register(new URL('./sw.js',base), {scope:base.pathname}).then(async registration => {
     await navigator.serviceWorker.ready;
     offlineReady = true;
-    $('offline-info').textContent = 'La app y el diccionario ya están descargados para usar sin conexión en este navegador. El dictado y algunas voces pueden necesitar internet. Si borrás los datos del navegador, necesitás descargarlos de nuevo.';
+    $('offline-info').textContent = 'La app, el diccionario y las definiciones ya están descargados para usar sin conexión en este navegador. El dictado y algunas voces pueden necesitar internet. Si borrás los datos del navegador, necesitás descargarlos de nuevo.';
     updateConnection();
     registration.addEventListener('updatefound', () => {
       const installing = registration.installing;

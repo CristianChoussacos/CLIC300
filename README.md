@@ -7,8 +7,13 @@ Escribí una palabra como te salga, compará las opciones y descubrí cómo escr
 
 - Diccionario español **RLA-ES / dictionary-es 4.0.0**, incorporado a la app:
   **57.344 entradas base** y reglas de afijos para reconocer más formas,
-  como plurales y conjugaciones. No es el DLE de la RAE ni contiene todas
-  las definiciones del español.
+  como plurales y conjugaciones.
+- **Definiciones de Wikcionario en español** inmediatamente debajo de cada
+  palabra encontrada: 131.931 entradas con significado y relaciones con
+  353.779 formas flexionadas. Para una conjugación o plural se muestra la
+  relación con su palabra base cuando la fuente la indica. Se muestran las
+  primeras dos acepciones; las restantes se abren con **Otros significados**.
+  Cada tarjeta enlaza su fuente y licencia. No es el DLE de la RAE.
 - **137 fichas originales** de primaria: significado sencillo, ejemplo y pista.
 - Consulta de palabras cortas, tildes, errores de tipeo y confusiones de sonido.
   La `ñ` se conserva distinta de la `n`.
@@ -35,12 +40,15 @@ ya incluye los archivos construidos y el diccionario.
 2. Ejecutá `npm start` (no requiere instalar dependencias para servir los archivos).
 3. Abrí **http://localhost:4173**.
 4. Esperá a que aparezca **«57.344 entradas · en tu dispositivo»**.
-5. Escribí `estava` y tocá **Descubrir**: aparece `estaba`, con ejemplo y pista.
+5. Escribí `estava` y tocá **Descubrir**: aparece `estaba`, con la definición
+   de `estar`, una explicación sencilla, ejemplo y pista. Probá `biologia`:
+   aparece `biología` y su significado del diccionario.
 6. Consultá `tubo`: compará los significados de `tubo` y `tuvo`.
 7. Tocá **Guardar en mi cuaderno**. Abrí **Mi cuaderno** para verla, filtrarla o quitarla.
 8. Tocá **Repasar mis palabras** o **Practicar** para completar los desafíos.
 9. En **Para familias y docentes**, verificá el mensaje que confirma que la app
-   y el diccionario están descargados. Luego podés desconectarte y recargar.
+   el diccionario y las definiciones están descargados. La primera descarga
+   incluye aproximadamente 32 MB de datos. Luego podés desconectarte y recargar.
 
 Si el puerto está ocupado: `npm start -- --port 4174` y abrí http://localhost:4174.
 No abras `index.html` con doble clic: el motor necesita servir sus archivos por
@@ -87,9 +95,13 @@ se elimina.
 
 - Las consultas son de palabras, no corrección gramatical de textos completos.
   Se admiten las expresiones educativas `a ver` y `por qué`.
-- Para una palabra general se informa su escritura y se ofrecen candidatos;
-  solo las fichas educativas tienen significado y ejemplo. No se generan
-  definiciones ni reglas inventadas para palabras desconocidas.
+- Las definiciones proceden de Wikcionario, extraídas por Kaikki/Wiktextract
+  y distribuidas localmente bajo CC BY-SA 4.0. Se conservan las acepciones de
+  la fuente; algunas son técnicas o regionales. Las fichas originales agregan
+  una explicación sencilla para primaria, diferenciada del diccionario.
+  Si falta una definición, se informa sin inventar un significado; si falla
+  la carga, se ofrece volver a intentarlo. La búsqueda y el cuaderno siguen
+  funcionando. No se envían consultas a un servicio externo.
 - Si el diccionario no se puede descargar, las fichas siguen disponibles y
   la app explica que está trabajando con un repertorio reducido.
 - El audio del dictado puede enviarse al proveedor del navegador y necesitar
@@ -112,6 +124,22 @@ Para agregar fichas, editá `src/education.js`. Cada ficha necesita `word`,
 Para actualizar el diccionario, cambiá la versión de `dictionary-es`, conservá
 sus licencias, reconstruí y revisá los cambios de vocabulario y las pruebas.
 La versión actual y su huella SHA-256 quedan en `data/metadata.json`.
+
+Las definiciones distribuidas están en `data/definitions/`, divididas en
+64 archivos locales. Su procedencia, fecha, licencia y huellas SHA-256 están
+en `data/definitions/metadata.json`; la construcción valida su integridad.
+Para regenerarlas, descargá el JSONL comprimido de la edición **española**
+de [Kaikki](https://kaikki.org/eswiktionary/) fuera del repositorio y ejecutá:
+
+```sh
+node scripts/import-definitions.mjs ../es-extract.jsonl.gz
+npm run check
+```
+
+El importador conserva entradas en español, hasta ocho acepciones por palabra,
+normaliza espacios y usa relaciones explícitas de la fuente para las formas
+flexionadas. No incorpora citas, traducciones ni ejemplos de obras externas.
+No hace falta descargar el archivo original para construir o usar la app.
 
 Los créditos, autores, licencias y fuentes de los datos están en
 [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).

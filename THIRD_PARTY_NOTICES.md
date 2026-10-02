@@ -28,6 +28,39 @@ Incluye `is-buffer`, Feross Aboukhadijeh, MIT: `licenses/is-buffer.txt`.
 ## Contenido educativo
 
 Las explicaciones, ejemplos, pistas y ejercicios de `src/education.js` son
-contenido original de Click300. El diccionario general no aporta definiciones:
-las fichas educativas y la comprobación ortográfica son recursos distintos.
+contenido original de Click300. Se muestran separados de las definiciones
+del diccionario bajo el título «En palabras sencillas».
 Las voces y el dictado son funciones opcionales del navegador.
+
+## Definiciones del diccionario
+
+Los archivos `data/definitions/definitions-*.json` contienen una adaptación
+de entradas en español de **Wikcionario en español**, de sus autores y
+colaboradores: https://es.wiktionary.org/.
+Cada definición conserva la palabra de origen; la interfaz enlaza el artículo,
+cuyo historial identifica las contribuciones de sus autores.
+
+Los datos se obtuvieron mediante **Kaikki / Wiktextract**, Tatu Ylonen y
+colaboradores: https://kaikki.org/eswiktionary/ y
+https://github.com/tatuylonen/wiktextract.
+Archivo de origen: https://kaikki.org/dictionary/downloads/es/es-extract.jsonl.gz.
+La fuente informaba una extracción del 27 de septiembre de 2026 del volcado
+del 1 de septiembre; el archivo descargado tiene fecha de modificación del
+28 de septiembre de 2026. La huella SHA-256 y los detalles de esta copia
+están en `data/definitions/metadata.json`.
+
+Esta adaptación de los datos se distribuye bajo **Creative Commons
+Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)**:
+https://creativecommons.org/licenses/by-sa/4.0/.
+El texto íntegro de la licencia está en `licenses/CC-BY-SA-4.0.txt`.
+Las adaptaciones de estos datos deben mantener la atribución y esta licencia
+o una licencia compatible, según sus términos.
+
+Modificaciones: selección de entradas españolas de hasta dos palabras,
+normalización de espacios, hasta ocho acepciones por entrada y relaciones
+explícitas de formas a lemas. Se excluyen traducciones, citas y ejemplos de
+obras externas. Hay 131.931 entradas con definiciones y 353.779 relaciones
+para formas reconocidas por el motor ortográfico. El script reproducible de
+selección está en `scripts/import-definitions.mjs`. Se conservan los textos
+de las definiciones de la fuente; las explicaciones educativas son originales
+y están identificadas por separado. No se copian definiciones del DLE de la RAE.

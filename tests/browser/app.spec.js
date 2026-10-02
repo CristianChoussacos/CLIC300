@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+import {definitionFile} from '../../src/definitions.js';
 
 async function open(page,path='/') {
   await page.goto(path);
@@ -159,12 +160,77 @@ for (const path of ['/','/Click300/']) test(`App y diccionario funcionan sin con
   await expect(page.locator('#connection')).toContainText('Sin conexión');
   await lookup(page,'biologia');
   await expect(page.locator('#search-results .word-title')).toHaveText('biología');
+  await expect(page.locator('#search-results .dictionary-definition')).toContainText('seres vivos');
+  await expect(page.locator('#search-results .dictionary-definition a').first()).toHaveAttribute('href','https://es.wiktionary.org/wiki/biolog%C3%ADa#Español');
   await expect(page.locator('#notebook-count')).toHaveText('1');
   await page.getByRole('button',{name:/Mi cuaderno/}).click();
   await expect(page.locator('#notebook-list .word-title')).toHaveText('árbol');
   await page.goto(new URL('THIRD_PARTY_NOTICES.md',page.url()).href);
   await expect(page.locator('body')).toContainText('Créditos y licencias de Click300');
   await expect(page.locator('#search-input')).toHaveCount(0);
+});
+
+test('La definición sigue a la palabra correcta, conserva las ayudas y explica las formas verbales',async ({page}) => {
+  await open(page);
+  await lookup(page,'estava');
+  const definition = page.locator('#search-results .dictionary-definition');
+  await expect(definition).toContainText('«estar»');
+  await expect(definition).toContainText('Existir');
+  await expect(page.locator('#search-results .simple-heading')).toHaveText('En palabras sencillas');
+  expect(await definition.evaluate(node => node.previousElementSibling.className)).toBe('word-top');
+  await page.getByRole('button',{name:'Guardar estaba en el cuaderno'}).click();
+  await expect(page.locator('#notebook-count')).toHaveText('1');
+  await expect(definition).toContainText('Existir');
+  await lookup(page,'tubo');
+  const cards = page.locator('#search-results .word-card');
+  await expect(cards.nth(0).locator('.dictionary-definition')).toContainText('cilíndrica');
+  await expect(cards.nth(1).locator('.dictionary-definition')).toContainText('Poseer');
+  await expect(cards.nth(1).locator('.definition-form')).toHaveText('Es una forma de «tener». Estos son sus significados:');
+  await cards.nth(1).getByText('Otros significados',{exact:true}).click();
+  await expect(cards.nth(1).locator('details')).toHaveAttribute('open','');
+  await lookup(page,'biologia');
+  await expect(definition).toContainText('seres vivos');
+  await expect(page.locator('#toast')).toBeHidden();
+  await page.screenshot({path:'test-results/definitions-desktop.png',fullPage:true});
+  await page.setViewportSize({width:375,height:812});
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({path:'test-results/definitions-mobile.png',fullPage:true});
+});
+
+test('Si falla el significado se reintenta sin afectar la corrección ni el cuaderno',async ({browser}) => {
+  const context = await browser.newContext({serviceWorkers:'block'});
+  const page = await context.newPage();
+  let fail = true;
+  await page.route(`**/data/definitions/${definitionFile('biología')}`,route => fail ? route.fulfill({status:503,body:'No disponible'}) : route.continue());
+  await open(page);
+  await lookup(page,'biologia');
+  await expect(page.locator('.dictionary-definition')).toContainText('No se pudo cargar');
+  await expect(page.locator('.word-title')).toHaveText('biología');
+  await page.getByRole('button',{name:'Guardar biología en el cuaderno'}).click();
+  await expect(page.locator('#notebook-count')).toHaveText('1');
+  fail = false;
+  await page.getByRole('button',{name:'Volver a cargar el significado'}).click();
+  await expect(page.locator('.dictionary-definition')).toContainText('seres vivos');
+  await context.close();
+});
+
+test('Un significado demorado no reaparece después de borrar la consulta',async ({browser}) => {
+  const context = await browser.newContext({serviceWorkers:'block'});
+  const page = await context.newPage();
+  let release;
+  const gate = new Promise(resolve => {release = resolve;});
+  await page.route(`**/data/definitions/${definitionFile('biología')}`,async route => {await gate;await route.continue();});
+  await open(page);
+  await lookup(page,'biologia');
+  await expect(page.locator('.dictionary-definition')).toContainText('Buscando el significado');
+  await page.getByRole('button',{name:'Borrar búsqueda'}).click();
+  const response = page.waitForResponse(url => url.url().endsWith(definitionFile('biología')));
+  release();
+  await response;
+  await expect(page.locator('#search-results')).toBeEmpty();
+  await lookup(page,'biologia');
+  await expect(page.locator('.dictionary-definition')).toContainText('seres vivos');
+  await context.close();
 });
 
 test('Diseño de escritorio y celular, navegación y ausencia de desbordamiento',async ({page}) => {
