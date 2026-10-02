@@ -1,4 +1,4 @@
-# Créditos y licencias de Click300
+# Créditos y licencias de CLIC300
 
 ## Diccionario ortográfico español
 
@@ -28,7 +28,7 @@ Incluye `is-buffer`, Feross Aboukhadijeh, MIT: `licenses/is-buffer.txt`.
 ## Contenido educativo
 
 Las explicaciones, ejemplos, pistas y ejercicios de `src/education.js` son
-contenido original de Click300. Se muestran separados de las definiciones
+contenido original de CLIC300. Se muestran separados de las definiciones
 del diccionario bajo el título «En palabras sencillas».
 Las voces y el dictado son funciones opcionales del navegador.
 

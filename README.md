@@ -1,7 +1,11 @@
-# Click300
+# CLIC300
 
 Aplicación web de consultas ortográficas para niñas y niños de primaria.
 Escribí una palabra como te salga, compará las opciones y descubrí cómo escribirla.
+
+**Aplicación publicada:** https://cristianchoussacos.github.io/CLIC300/
+
+**Repositorio:** https://github.com/CristianChoussacos/CLIC300
 
 ## Qué incluye
 
@@ -81,7 +85,7 @@ están incluidos en Git: no hace falta construir en el hosting.
 
 Para GitHub Pages, una vez integrados los cambios en `main`, elegí en
 **Settings → Pages → Deploy from a branch → main → /(root)**.
-Las rutas son relativas y funcionan bajo `/Click300/`; este despliegue no se
+Las rutas son relativas y funcionan bajo `/CLIC300/`; este despliegue no se
 activa automáticamente al abrir una propuesta de cambios.
 El archivo `.nojekyll` permite servir todos los archivos estáticos sin
 transformarlos, incluidos los créditos y licencias necesarios para la descarga
@@ -89,10 +93,15 @@ sin conexión. Conservá ese archivo en la raíz al publicar en GitHub Pages.
 
 Tras modificar fuentes, ejecutá `npm run build` y guardá también los archivos
 generados. El contenido determina la versión de caché. Una actualización se
-activa al cerrar las pestañas anteriores de Click300 y volver a abrir la app.
-El service worker limpia exclusivamente cachés de Click300 dentro de su propio
+activa al cerrar las pestañas anteriores de CLIC300 y volver a abrir la app.
+El service worker limpia exclusivamente cachés de CLIC300 dentro de su propio
 alcance y no borra palabras del cuaderno. La antigua base `OrtoclicDB` tampoco
 se elimina.
+El cuaderno utiliza `CLIC300DB` y migra una sola vez las palabras de los
+identificadores anteriores en el mismo navegador y origen. Conserva los datos
+anteriores como respaldo. Si la migración falla, avisa y permite reintentar al
+recargar. El cambio de ruta en GitHub Pages conserva el origen y permite esta
+migración; otro navegador, dispositivo o dominio tiene un cuaderno distinto.
 
 ## Alcance y privacidad
 

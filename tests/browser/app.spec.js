@@ -16,7 +16,7 @@ test('Consultas, palabras cortas, borrar, Unicode y entradas inseguras',async ({
   const errors=[];
   page.on('pageerror',error => errors.push(error.message));
   await open(page);
-  await expect(page).toHaveTitle(/Click300/);
+  await expect(page).toHaveTitle(/CLIC300/);
   await page.locator('#search-input').fill('a');
   await expect(page.locator('#search-results .word-title')).toHaveText('a');
   await lookup(page,'estava');
@@ -59,6 +59,48 @@ test('El cuaderno persiste al recargar, se filtra y permite quitar palabras',asy
   await page.getByRole('button',{name:'Quitar árbol del cuaderno'}).click();
   await expect(page.locator('#notebook-count')).toHaveText('0');
   await expect(page.locator('#notebook-list')).toContainText('Tu primera palabra');
+});
+
+test('El cambio de nombre conserva los cuadernos anteriores de IndexedDB y localStorage una sola vez',async ({page}) => {
+  await page.addInitScript(() => {
+    // Identificadores históricos del fixture; el producto usa el nombre nuevo.
+    const previous = String.fromCharCode(67,108,105,99,107,51,48,48);
+    if (sessionStorage.getItem('seeded-notebook')) return;
+    sessionStorage.setItem('seeded-notebook','1');
+    localStorage.setItem(`${previous.toLowerCase()}-notebook`,JSON.stringify([{word:'biología',savedAt:2}]));
+    const request = indexedDB.open(`${previous}DB`,1);
+    request.onupgradeneeded = () => request.result.createObjectStore('notebook',{keyPath:'word'}).put({word:'árbol',savedAt:1});
+    request.onsuccess = () => request.result.close();
+  });
+  await open(page);
+  await expect(page.locator('#notebook-count')).toHaveText('2');
+  await page.getByRole('button',{name:/Mi cuaderno/}).click();
+  await expect(page.locator('#notebook-list .word-title')).toHaveText(['biología','árbol']);
+  await page.getByRole('button',{name:'Quitar árbol del cuaderno'}).click();
+  await expect(page.locator('#notebook-count')).toHaveText('1');
+  await page.reload();
+  await expect(page.locator('#notebook-count')).toHaveText('1');
+  await page.getByRole('button',{name:/Mi cuaderno/}).click();
+  await expect(page.locator('#notebook-list .word-title')).toHaveText('biología');
+  expect(await page.evaluate(async () => (await indexedDB.databases()).some(db => db.name === 'CLIC300DB'))).toBe(true);
+});
+
+test('Migra el cuaderno anterior cuando solo funciona localStorage y no restaura palabras quitadas',async ({page}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window,'indexedDB',{value:undefined});
+    if (sessionStorage.getItem('seeded-notebook')) return;
+    sessionStorage.setItem('seeded-notebook','1');
+    const previous = String.fromCharCode(99,108,105,99,107,51,48,48);
+    localStorage.setItem(`${previous}-notebook`,JSON.stringify([{word:'estaba',savedAt:1}]));
+  });
+  await open(page);
+  await expect(page.locator('#notebook-count')).toHaveText('1');
+  await page.getByRole('button',{name:/Mi cuaderno/}).click();
+  await expect(page.locator('#notebook-list .word-title')).toHaveText('estaba');
+  await page.getByRole('button',{name:'Quitar estaba del cuaderno'}).click();
+  await expect(page.locator('#notebook-count')).toHaveText('0');
+  await page.reload();
+  await expect(page.locator('#notebook-count')).toHaveText('0');
 });
 
 test('Los desafíos usan el contexto y cuentan solo la primera respuesta',async ({page}) => {
@@ -146,7 +188,7 @@ test('Micrófono denegado muestra una alternativa sin romper la consulta',async 
   await expect(page.locator('.word-title')).toHaveText('estaba');
 });
 
-for (const path of ['/','/Click300/']) test(`App y diccionario funcionan sin conexión en ${path}`,async ({page,context}) => {
+for (const path of ['/','/CLIC300/']) test(`App y diccionario funcionan sin conexión en ${path}`,async ({page,context}) => {
   await open(page,path);
   await page.evaluate(async () => {await navigator.serviceWorker.ready;});
   await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
@@ -166,7 +208,7 @@ for (const path of ['/','/Click300/']) test(`App y diccionario funcionan sin con
   await page.getByRole('button',{name:/Mi cuaderno/}).click();
   await expect(page.locator('#notebook-list .word-title')).toHaveText('árbol');
   await page.goto(new URL('THIRD_PARTY_NOTICES.md',page.url()).href);
-  await expect(page.locator('body')).toContainText('Créditos y licencias de Click300');
+  await expect(page.locator('body')).toContainText('Créditos y licencias de CLIC300');
   await expect(page.locator('#search-input')).toHaveCount(0);
 });
 

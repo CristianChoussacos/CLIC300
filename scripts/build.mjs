@@ -36,4 +36,4 @@ hash.update(await readFile('src/sw-template.js'));
 const version = hash.digest('hex').slice(0,12);
 const template = await readFile('src/sw-template.js','utf8');
 await writeFile('sw.js',template.replace('__VERSION__',version).replace('__PRECACHE__',JSON.stringify(precache)));
-console.log(`Click300 construida: ${metadata.baseEntries.toLocaleString('es')} entradas base, ${definitions.directEntries.toLocaleString('es')} entradas con significado, ${entries.length} fichas educativas. Caché ${version}.`);
+console.log(`CLIC300 construida: ${metadata.baseEntries.toLocaleString('es')} entradas base, ${definitions.directEntries.toLocaleString('es')} entradas con significado, ${entries.length} fichas educativas. Caché ${version}.`);

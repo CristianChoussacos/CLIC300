@@ -1,4 +1,4 @@
-name: Comprobar Click300
+name: Comprobar CLIC300
 on:
   push:
   pull_request:

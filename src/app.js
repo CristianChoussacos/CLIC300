@@ -326,6 +326,7 @@ store.ready.then(async () => {
   try { await refreshSaved(); }
   catch { $('storage-warning').hidden = false; $('storage-warning').textContent = 'No se pudo abrir tu cuaderno. Recargá o probá otro navegador. Tus datos anteriores no se borraron.'; }
   if (store.mode === 'memory') { $('storage-warning').hidden = false; $('storage-warning').textContent = 'Este navegador no permite guardar de forma permanente. Tu cuaderno durará solo esta sesión.'; }
+  if (store.migrationPending) { $('storage-warning').hidden = false; $('storage-warning').textContent = 'No se pudo recuperar el cuaderno de la versión anterior. Sus datos siguen guardados. Cerrá las otras pestañas y recargá para intentarlo de nuevo.'; }
 });
 
 function shuffle(items) {
@@ -437,7 +438,7 @@ if ('serviceWorker' in navigator && window.isSecureContext) {
     registration.addEventListener('updatefound', () => {
       const installing = registration.installing;
       installing?.addEventListener('statechange', () => {
-        if (installing.state === 'installed' && navigator.serviceWorker.controller) toast('Hay una versión nueva. Cerrá las pestañas de Click300 y volvé a abrirla para actualizar.');
+        if (installing.state === 'installed' && navigator.serviceWorker.controller) toast('Hay una versión nueva. Cerrá las pestañas de CLIC300 y volvé a abrirla para actualizar.');
       });
     });
   }).catch(() => { $('offline-info').textContent = 'No se pudo preparar el uso sin conexión. Conectate y recargá para volver a intentarlo.'; });

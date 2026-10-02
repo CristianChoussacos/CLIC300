@@ -12,7 +12,7 @@ const server = createServer(async (request,response) => {
     if (!['GET','HEAD'].includes(request.method)) { response.writeHead(405);response.end();return; }
     let path = decodeURIComponent(new URL(request.url,'http://localhost').pathname);
     // También permite comprobar las rutas relativas de GitHub Pages.
-    if (path.startsWith('/Click300/')) path = path.slice('/Click300'.length);
+    if (path.startsWith('/CLIC300/')) path = path.slice('/CLIC300'.length);
     if (path.endsWith('/')) path += 'index.html';
     const file = resolve(root, `.${path}`);
     if (!file.startsWith(root) || file.includes(`${sep}node_modules${sep}`) || file.includes(`${sep}.git${sep}`)) { response.writeHead(403);response.end();return; }
@@ -23,4 +23,4 @@ const server = createServer(async (request,response) => {
   } catch { response.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'});response.end('Archivo no encontrado'); }
 });
 server.on('error',error => {console.error(error.code === 'EADDRINUSE' ? `El puerto ${port} está ocupado. Usá npm start -- --port 4174.` : error.message);process.exit(1);});
-server.listen(port,'127.0.0.1',() => console.log(`Click300: http://localhost:${port} (también http://localhost:${port}/Click300/)`));
+server.listen(port,'127.0.0.1',() => console.log(`CLIC300: http://localhost:${port} (también http://localhost:${port}/CLIC300/)`));

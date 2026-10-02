@@ -1,6 +1,6 @@
 /* Generado por npm run build. Cada versión conserva juntos app y diccionario. */
 const VERSION = '__VERSION__';
-const PREFIX = `click300-${encodeURIComponent(self.registration.scope)}-`;
+const PREFIX = `CLIC300-${encodeURIComponent(self.registration.scope)}-`;
 const CACHE = PREFIX + VERSION;
 const PRECACHE = __PRECACHE__;
 const base = new URL('./', self.location.href);
