@@ -1,5 +1,5 @@
 /* Generado por npm run build. Cada versión conserva juntos app y diccionario. */
-const VERSION = '10b0d463d66e';
+const VERSION = '284fda53c96f';
 const PREFIX = `click300-${encodeURIComponent(self.registration.scope)}-`;
 const CACHE = PREFIX + VERSION;
 const PRECACHE = ["./","./index.html","./styles.css","./assets/app.js","./assets/worker.js","./data/es.aff","./data/es.dic","./data/metadata.json","./icon.svg","./icon-192.png","./icon-512.png","./manifest.webmanifest","./THIRD_PARTY_NOTICES.md","./licenses/dictionary-es.txt","./licenses/MPL-1.1.txt","./licenses/nspell.txt","./licenses/is-buffer.txt"];
@@ -22,7 +22,7 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) return;
-  if (request.mode === 'navigate') {
+  if (request.mode === 'navigate' && (url.pathname === base.pathname || url.pathname === new URL('./index.html',base).pathname)) {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE);
       const cached = await cache.match(new URL('./index.html',base));

@@ -22,7 +22,7 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) return;
-  if (request.mode === 'navigate') {
+  if (request.mode === 'navigate' && (url.pathname === base.pathname || url.pathname === new URL('./index.html',base).pathname)) {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE);
       const cached = await cache.match(new URL('./index.html',base));

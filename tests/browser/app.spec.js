@@ -162,6 +162,9 @@ for (const path of ['/','/Click300/']) test(`App y diccionario funcionan sin con
   await expect(page.locator('#notebook-count')).toHaveText('1');
   await page.getByRole('button',{name:/Mi cuaderno/}).click();
   await expect(page.locator('#notebook-list .word-title')).toHaveText('árbol');
+  await page.goto(new URL('THIRD_PARTY_NOTICES.md',page.url()).href);
+  await expect(page.locator('body')).toContainText('Créditos y licencias de Click300');
+  await expect(page.locator('#search-input')).toHaveCount(0);
 });
 
 test('Diseño de escritorio y celular, navegación y ausencia de desbordamiento',async ({page}) => {

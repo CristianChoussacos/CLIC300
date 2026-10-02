@@ -26,6 +26,7 @@ for (const size of [192,512]) await writeFile(`icon-${size}.png`,new Resvg(svg,{
 const precache = ['./','./index.html','./styles.css','./assets/app.js','./assets/worker.js','./data/es.aff','./data/es.dic','./data/metadata.json','./icon.svg','./icon-192.png','./icon-512.png','./manifest.webmanifest','./THIRD_PARTY_NOTICES.md','./licenses/dictionary-es.txt','./licenses/MPL-1.1.txt','./licenses/nspell.txt','./licenses/is-buffer.txt'];
 const hash = createHash('sha256');
 for (const file of precache.filter(file => file !== './')) hash.update(await readFile(file));
+hash.update(await readFile('src/sw-template.js'));
 const version = hash.digest('hex').slice(0,12);
 const template = await readFile('src/sw-template.js','utf8');
 await writeFile('sw.js',template.replace('__VERSION__',version).replace('__PRECACHE__',JSON.stringify(precache)));
