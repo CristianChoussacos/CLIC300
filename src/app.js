@@ -93,6 +93,8 @@ async function refreshSaved() {
 async function toggleSaved(word, action) {
   if (action.disabled) return;
   action.disabled = true;
+  const previousLabel = action.textContent;
+  action.textContent = isSaved(word) ? 'Quitando…' : 'Guardando…';
   try {
     const added = await store.toggle(word);
     await refreshSaved();
@@ -100,7 +102,7 @@ async function toggleSaved(word, action) {
     if ($('practice-source').value === 'saved') { practiceDeck = []; question = null; if (activeTab === 'practice') nextQuestion(); }
     toast(added ? store.mode === 'memory' ? 'Guardada por esta sesión. El navegador no permite conservarla al cerrar.' : '¡Palabra guardada en tu cuaderno!' : 'Palabra quitada del cuaderno.');
   } catch (error) { toast(error.message || 'No se pudo guardar. Intentá de nuevo.'); }
-  finally { action.disabled = false; }
+  finally { action.disabled = false; action.textContent = previousLabel; }
 }
 
 function wordCard(result) {

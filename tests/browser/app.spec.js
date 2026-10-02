@@ -151,6 +151,8 @@ for (const path of ['/','/Click300/']) test(`App y diccionario funcionan sin con
   await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
   await lookup(page,'arbol');
   await page.getByRole('button',{name:'Guardar árbol en el cuaderno'}).click();
+  // Recargar solo después de que finalice la transacción persistente.
+  await expect(page.locator('#notebook-count')).toHaveText('1');
   await context.setOffline(true);
   await page.reload();
   await expect(page.locator('#dictionary-status')).toContainText('57.344');

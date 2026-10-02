@@ -1,5 +1,5 @@
 /* Generado por npm run build. Cada versión conserva juntos app y diccionario. */
-const VERSION = '9be23f1b8161';
+const VERSION = '10b0d463d66e';
 const PREFIX = `click300-${encodeURIComponent(self.registration.scope)}-`;
 const CACHE = PREFIX + VERSION;
 const PRECACHE = ["./","./index.html","./styles.css","./assets/app.js","./assets/worker.js","./data/es.aff","./data/es.dic","./data/metadata.json","./icon.svg","./icon-192.png","./icon-512.png","./manifest.webmanifest","./THIRD_PARTY_NOTICES.md","./licenses/dictionary-es.txt","./licenses/MPL-1.1.txt","./licenses/nspell.txt","./licenses/is-buffer.txt"];
