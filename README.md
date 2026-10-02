@@ -83,6 +83,9 @@ Para GitHub Pages, una vez integrados los cambios en `main`, elegí en
 **Settings → Pages → Deploy from a branch → main → /(root)**.
 Las rutas son relativas y funcionan bajo `/Click300/`; este despliegue no se
 activa automáticamente al abrir una propuesta de cambios.
+El archivo `.nojekyll` permite servir todos los archivos estáticos sin
+transformarlos, incluidos los créditos y licencias necesarios para la descarga
+sin conexión. Conservá ese archivo en la raíz al publicar en GitHub Pages.
 
 Tras modificar fuentes, ejecutá `npm run build` y guardá también los archivos
 generados. El contenido determina la versión de caché. Una actualización se
